@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Intelligence Explorer - Professional Color Tools</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --accent: #06b6d4;
+            --bg: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --text: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            --shadow: rgba(15, 23, 42, 0.08);
+            --shadow-lg: rgba(15, 23, 42, 0.15);
+            --success: #059669;
+            --error: #dc2626;
+            --warning: #d97706;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.6;
+            font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+        }
+
+        /* Navbar */
+        .navbar {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-light);
+            padding: 1rem 2rem;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero */
+        .hero {
+            background: var(--bg);
+            padding: 6rem 2rem 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(37, 99, 235, 0.03) 0%, 
+                rgba(6, 182, 212, 0.03) 50%, 
+                rgba(139, 92, 246, 0.03) 100%);
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            background: var(--bg-secondary);
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 80px;
+        }
+
+        .section-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        /* Card */
+        .card {
+            background: var(--bg);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 24px var(--shadow);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px var(--shadow-lg);
+        }
+
+        /* Form Elements */
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        input[type="text"],
+        input[type="file"],
+        textarea {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--bg);
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.875rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 0.625rem 1.25rem;
+            font-size: 0.875rem;
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-light);
+            transform: translateY(-1px);
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Swatch */
+        .swatch {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .swatch-color {
+            width: 100%;
+            height: 80px;
+            border-radius: 6px;
+            margin-bottom: 0.75rem;
+            border: 1px solid var(--border);
+        }
+
+        .swatch-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--text);
+        }
+
+        .swatch-hex {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Alert */
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Image Preview */
+        .image-preview {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .image-preview.show {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.125rem;
+            }
+
+            .hero-stats {
+                gap: 2rem;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+                font-size: 0.875rem;
+            }
+
+            .navbar {
+                padding: 1rem;
+            }
+
+            .brand {
+                font-size: 1.25rem;
+            }
+
+            .brand-icon {
+                width: 28px;
+                height: 28px;
+                font-size: 0.875rem;
+            }
+
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            .card {
+                padding: 2rem;
+            }
+
+            .grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 4rem 1rem 3rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        .copied-feedback {
+            display: inline-block;
+            margin-left: 0.5rem;
+            color: var(--success);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="brand">
+                <div class="brand-icon">C</div>
+                Color Intelligence
+            </div>
+            <ul class="nav-links">
+                <li><a href="#shades">Shades & Tints</a></li>
+                <li><a href="#text-to-color">AI Color Generator</a></li>
+                <li><a href="#image-colors">Image Analysis</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Professional <span class="highlight">Color Intelligence</span> Platform</h1>
+            <p>Advanced color analysis, palette generation, and AI-powered color exploration tools for designers, developers, and creative professionals.</p>
+            
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number">10K+</span>
+                    <span class="stat-label">Colors Generated</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">AI</span>
+                    <span class="stat-label">Powered</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">Pro</span>
+                    <span class="stat-label">Quality</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Color to Shades/Tints -->
+        <section id="shades" class="section">
+            <h2 class="section-title">Color Palette Generator</h2>
+            <div class="card">
+                <div class="input-group">
+                    <label for="colorInput">Enter Color Name or Hex Code</label>
+                    <input 
+                        type="text" 
+                        id="colorInput" 
+                        placeholder="e.g., pink, light pink, hot pink, #ff69b4"
+                    >
+                </div>
+                <button class="btn btn-primary" onclick="generateShades()">
+                    <span>Generate Palette</span>
+                </button>
+                <button class="btn btn-secondary" onclick="testAPI()" style="margin-left: 1rem;">
+                    <span>Test AI</span>
+                </button>
+                
+                <div style="margin-top: 1rem;">
+                    <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Quick Examples:</p>
+                    <button class="btn btn-secondary" onclick="loadExample('pink')" style="margin: 0.25rem;">Pink</button>
+                    <button class="btn btn-secondary" onclick="loadExample('light-pink')" style="margin: 0.25rem;">Light Pink</button>
+                    <button class="btn btn-secondary" onclick="loadExample('hot-pink')" style="margin: 0.25rem;">Hot Pink</button>
+                    <button class="btn btn-secondary" onclick="loadExample('ocean')" style="margin: 0.25rem;">Ocean Blue</button>
+                </div>
+                
+                <div id="shadesAlert" class="alert alert-error"></div>
+                <div id="shadesLoading" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Generating professional color palette...</p>
+                </div>
+                <div id="shadesResult"></div>
+            </div>
+        </section>
+
+        <!-- Text to Color -->
+        <section id="text-to-color" class="section">
+            <h2 class="section-title">AI Color Generator</h2>
+            <div class="card">
+                <div class="input-group">
+                    <label for="textPrompt">Describe Your Perfect Color</label>
+                    <textarea 
+                        id="textPrompt" 
+                        placeholder="e.g., A warm sunset orange that feels cozy and inviting, The deep blue of a midnight ocean, A fresh spring green like new leaves"
+                    ></textarea>
+                </div>
+                <button class="btn btn-primary" onclick="textToColor()">
+                    <span>Generate Color</span>
+                </button>
+                <div id="textAlert" class="alert alert-error"></div>
+                <div id="textLoading" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>AI is creating your perfect color...</p>
+                </div>
+                <div id="textResult"></div>
+            </div>
+        </section>
+
+        <!-- Image to Colors -->
+        <section id="image-colors" class="section">
+            <h2 class="section-title">Image Color Analysis</h2>
+            <div class="card">
+                <div class="input-group">
+                    <label for="imageInput">Upload Image for Color Extraction</label>
+                    <input 
+                        type="file" 
+                        id="imageInput" 
+                        accept="image/*"
+                        onchange="previewImage()"
+                    >
+                </div>
+                <img id="imagePreview" class="image-preview" alt="Preview">
+                <button class="btn btn-primary" onclick="extractColors()" style="margin-top: 1rem;">
+                    <span>Extract Colors</span>
+                </button>
+                <div id="imageAlert" class="alert alert-error"></div>
+                <div id="imageLoading" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>AI is analyzing image colors...</p>
+                </div>
+                <div id="imageResult"></div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // OpenRouter API Configuration
+        const OPENROUTER_API_KEY = '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';
+        const MODEL = 'qwen/qwen-2.5-72b-instruct:free';
+        const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
+
+        // Utility: Show alert
+        function showAlert(elementId, message, type = 'error') {
+            const alert = document.getElementById(elementId);
+            alert.className = `alert alert-${type} show`;
+            alert.textContent = message;
+            setTimeout(() => {
+                alert.classList.remove('show');
+            }, 5000);
+        }
+
+        // Utility: Copy to clipboard
+        function copyToClipboard(text, buttonElement) {
+            navigator.clipboard.writeText(text).then(() => {
+                const feedback = buttonElement.parentElement.querySelector('.copied-feedback');
+                if (feedback) {
+                    feedback.remove();
+                }
+                const span = document.createElement('span');
+                span.className = 'copied-feedback';
+                span.textContent = 'Copied!';
+                buttonElement.parentElement.appendChild(span);
+                setTimeout(() => span.remove(), 2000);
+            });
+        }
+
+        // Utility: Create swatch HTML
+        function createSwatch(color, label = '', hex = '') {
+            const displayHex = hex || color;
+            return `
+                <div class="swatch">
+                    <div class="swatch-color" style="background-color: ${color};"></div>
+                    ${label ? `<div class="swatch-label">${label}</div>` : ''}
+                    <div class="swatch-hex">${displayHex}</div>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('${displayHex}', this)">Copy</button>
+                </div>
+            `;
+        }
+
+        // Utility: Call OpenRouter API
+        async function callOpenRouterAPI(prompt) {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+                        'HTTP-Referer': window.location.origin,
+                        'X-Title': 'Color Intelligence Explorer'
+                    },
+                    body: JSON.stringify({
+                        model: MODEL,
+                        messages: [
+                            {
+                                role: 'system',
+                                content: 'You are a color expert. Always respond with precise hex color codes and clear color descriptions.'
+                            },
+                            {
+                                role: 'user',
+                                content: prompt
+                            }
+                        ],
+                        temperature: 0.3,
+                        max_tokens: 200
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.text();
+                    console.error('API Error:', response.status, errorData);
+                    throw new Error(`API request failed: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log('API Response:', data);
+                return data.choices[0].message.content;
+            } catch (error) {
+                console.error('OpenRouter API Error:', error);
+                throw error;
+            }
+        }
+
+        // Utility: Parse color from text
+        function parseColorFromResponse(response) {
+            console.log('Parsing response:', response);
+            
+            // Look for hex colors first
+            const hexMatch = response.match(/#[0-9a-fA-F]{6}/);
+            if (hexMatch) {
+                console.log('Found hex:', hexMatch[0]);
+                return hexMatch[0];
+            }
+
+            // Look for rgb colors
+            const rgbMatch = response.match(/rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/);
+            if (rgbMatch) {
+                const r = parseInt(rgbMatch[1]);
+                const g = parseInt(rgbMatch[2]);
+                const b = parseInt(rgbMatch[3]);
+                const hex = `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+                console.log('Converted RGB to hex:', hex);
+                return hex;
+            }
+
+            // Enhanced color names mapping
+            const colorNames = {
+                // Basic colors
+                'red': '#DC2626', 'blue': '#2563EB', 'green': '#059669', 'yellow': '#EAB308',
+                'orange': '#EA580C', 'purple': '#9333EA', 'pink': '#EC4899', 'brown': '#A16207',
+                'black': '#000000', 'white': '#FFFFFF', 'gray': '#6B7280', 'grey': '#6B7280',
+                
+                // Pink shades
+                'light pink': '#F9A8D4', 'hot pink': '#EC4899', 'deep pink': '#BE185D',
+                'pale pink': '#FDF2F8', 'rose pink': '#FB7185', 'magenta pink': '#D946EF',
+                'soft pink': '#F3E8FF', 'bright pink': '#E11D48', 'dark pink': '#BE123C',
+                
+                // Blue shades
+                'light blue': '#7DD3FC', 'dark blue': '#1E3A8A', 'navy blue': '#1E40AF',
+                'sky blue': '#0EA5E9', 'royal blue': '#1D4ED8', 'powder blue': '#BAE6FD',
+                'steel blue': '#475569', 'midnight blue': '#1E293B', 'ocean blue': '#0284C7',
+                
+                // Other common shades
+                'lime': '#84CC16', 'cyan': '#06B6D4', 'teal': '#0D9488', 'indigo': '#4F46E5',
+                'violet': '#8B5CF6', 'crimson': '#DC2626', 'gold': '#F59E0B', 'silver': '#9CA3AF',
+                'coral': '#FB7185', 'turquoise': '#06B6D4', 'lavender': '#C4B5FD', 'mint': '#6EE7B7'
+            };
+
+            // Look for color names in response (case insensitive)
+            const lowerResponse = response.toLowerCase();
+            for (const [name, hex] of Object.entries(colorNames)) {
+                if (lowerResponse.includes(name)) {
+                    console.log('Found color name:', name, '->', hex);
+                    return hex;
+                }
+            }
+
+            console.log('No color found, using default');
+            return '#6366F1'; // Default fallback color
+        }
+
+        // Generate Shades & Tints
+        async function generateShades() {
+            const input = document.getElementById('colorInput').value.trim();
+            const loading = document.getElementById('shadesLoading');
+            const result = document.getElementById('shadesResult');
+            const alert = document.getElementById('shadesAlert');
+            
+            if (!input) {
+                showAlert('shadesAlert', 'Please enter a color');
+                return;
+            }
+
+            alert.classList.remove('show');
+            loading.style.display = 'block';
+            result.innerHTML = '';
+
+            try {
+                console.log('Processing color input:', input);
+                
+                let baseColor = input;
+                
+                // If it's not a hex code, try to convert it
+                if (!input.startsWith('#') && !input.startsWith('rgb')) {
+                    console.log('Converting color name to hex...');
+                    
+                    // First try local color names
+                    baseColor = parseColorFromResponse(input);
+                    
+                    // If still not a proper hex, use AI
+                    if (baseColor === '#6366F1') {
+                        const prompt = `Convert "${input}" to a hex color code. Respond only with #RRGGBB format.`;
+                        const aiResponse = await callOpenRouterAPI(prompt);
+                        console.log('AI conversion response:', aiResponse);
+                        baseColor = parseColorFromResponse(aiResponse);
+                    }
+                }
+
+                console.log('Base color:', baseColor);
+
+                // Generate shades and tints
+                const shades = generateColorVariations(baseColor, 'shades');
+                const tints = generateColorVariations(baseColor, 'tints');
+
+                loading.style.display = 'none';
+
+                let html = '<div class="grid">';
+                
+                // Base color
+                html += createSwatch(baseColor, 'Base Color', baseColor);
+
+                // Shades (darker variations)
+                shades.forEach((shade, i) => {
+                    html += createSwatch(shade, `Shade ${i + 1}`, shade);
+                });
+
+                // Tints (lighter variations)
+                tints.forEach((tint, i) => {
+                    html += createSwatch(tint, `Tint ${i + 1}`, tint);
+                });
+
+                html += '</div>';
+                result.innerHTML = html;
+
+            } catch (error) {
+                loading.style.display = 'none';
+                console.error('Error:', error);
+                showAlert('shadesAlert', 'Failed to generate palette. Please check your internet connection and try again.');
+            }
+        }
+
+        // Generate color variations (shades/tints)
+        function generateColorVariations(hexColor, type) {
+            const hex = hexColor.replace('#', '');
+            const r = parseInt(hex.substring(0, 2), 16);
+            const g = parseInt(hex.substring(2, 4), 16);
+            const b = parseInt(hex.substring(4, 6), 16);
+
+            const variations = [];
+            const steps = [0.2, 0.4, 0.6, 0.8];
+
+            steps.forEach(step => {
+                let newR, newG, newB;
+                
+                if (type === 'shades') {
+                    // Darker variations
+                    newR = Math.round(r * (1 - step));
+                    newG = Math.round(g * (1 - step));
+                    newB = Math.round(b * (1 - step));
+                } else {
+                    // Lighter variations (tints)
+                    newR = Math.round(r + (255 - r) * step);
+                    newG = Math.round(g + (255 - g) * step);
+                    newB = Math.round(b + (255 - b) * step);
+                }
+
+                const newHex = `#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`;
+                variations.push(newHex);
+            });
+
+            return variations;
+        }
+
+        // Text to Color
+        async function textToColor() {
+            const prompt = document.getElementById('textPrompt').value.trim();
+            const loading = document.getElementById('textLoading');
+            const result = document.getElementById('textResult');
+            const alert = document.getElementById('textAlert');
+
+            if (!prompt) {
+                showAlert('textAlert', 'Please describe a color');
+                return;
+            }
+
+            alert.classList.remove('show');
+            loading.style.display = 'block';
+            result.innerHTML = '';
+
+            try {
+                console.log('Requesting color for:', prompt);
+                
+                const aiPrompt = `Convert this color description to a hex color code: "${prompt}"
+
+Instructions:
+- Respond ONLY with a single hex color code in format #RRGGBB
+- Consider color psychology and visual associations
+- For shades, use appropriate lightness/darkness
+- Examples: "light pink" = #F9A8D4, "deep ocean blue" = #0284C7, "sunset orange" = #EA580C
+
+Color description: ${prompt}
+Hex code:`;
+                
+                const aiResponse = await callOpenRouterAPI(aiPrompt);
+                console.log('AI Response:', aiResponse);
+                
+                const generatedColor = parseColorFromResponse(aiResponse);
+                console.log('Generated color:', generatedColor);
+
+                // Generate shades and tints for the AI color
+                const shades = generateColorVariations(generatedColor, 'shades');
+                const tints = generateColorVariations(generatedColor, 'tints');
+
+                loading.style.display = 'none';
+
+                let html = '<div class="grid">';
+                html += createSwatch(generatedColor, 'AI Generated', generatedColor);
+                
+                shades.forEach((shade, i) => {
+                    html += createSwatch(shade, `Shade ${i + 1}`, shade);
+                });
+
+                tints.forEach((tint, i) => {
+                    html += createSwatch(tint, `Tint ${i + 1}`, tint);
+                });
+
+                html += '</div>';
+                result.innerHTML = html;
+
+            } catch (error) {
+                loading.style.display = 'none';
+                console.error('Error:', error);
+                showAlert('textAlert', 'Failed to generate color. Please check your internet connection and try again.');
+            }
+        }
+
+        // Preview Image
+        function previewImage() {
+            const input = document.getElementById('imageInput');
+            const preview = document.getElementById('imagePreview');
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    preview.src = e.target.result;
+                    preview.classList.add('show');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Extract Colors from Image
+        async function extractColors() {
+            const input = document.getElementById('imageInput');
+            const loading = document.getElementById('imageLoading');
+            const result = document.getElementById('imageResult');
+            const alert = document.getElementById('imageAlert');
+
+            if (!input.files || !input.files[0]) {
+                showAlert('imageAlert', 'Please upload an image');
+                return;
+            }
+
+            alert.classList.remove('show');
+            loading.style.display = 'block';
+            result.innerHTML = '';
+
+            try {
+                const file = input.files[0];
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const img = new Image();
+
+                img.onload = async function() {
+                    // Resize image for faster processing
+                    const maxSize = 200;
+                    const ratio = Math.min(maxSize / img.width, maxSize / img.height);
+                    canvas.width = img.width * ratio;
+                    canvas.height = img.height * ratio;
+                    
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    
+                    // Extract dominant colors using basic color analysis
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const colors = extractDominantColors(imageData);
+                    
+                    // Use AI to enhance color extraction and provide better names
+                    const colorDescriptions = await getAIColorDescriptions(colors);
+                    
+                    loading.style.display = 'none';
+
+                    let html = '<div class="grid">';
+                    colors.slice(0, 6).forEach((color, index) => {
+                        const label = colorDescriptions[index] || `Color ${index + 1}`;
+                        html += createSwatch(color, label, color);
+                    });
+                    html += '</div>';
+                    result.innerHTML = html;
+                };
+
+                img.src = URL.createObjectURL(file);
+
+            } catch (error) {
+                loading.style.display = 'none';
+                console.error('Error:', error);
+                showAlert('imageAlert', 'Failed to extract colors. Please try again.');
+            }
+        }
+
+        // Extract dominant colors from image data
+        function extractDominantColors(imageData) {
+            const data = imageData.data;
+            const colorCounts = {};
+            
+            // Sample every nth pixel for performance
+            const step = 4;
+            for (let i = 0; i < data.length; i += step * 4) {
+                const r = data[i];
+                const g = data[i + 1];
+                const b = data[i + 2];
+                const alpha = data[i + 3];
+                
+                // Skip transparent pixels
+                if (alpha < 128) continue;
+                
+                // Quantize colors to reduce noise
+                const qr = Math.round(r / 32) * 32;
+                const qg = Math.round(g / 32) * 32;
+                const qb = Math.round(b / 32) * 32;
+                
+                const hex = `#${qr.toString(16).padStart(2, '0')}${qg.toString(16).padStart(2, '0')}${qb.toString(16).padStart(2, '0')}`;
+                colorCounts[hex] = (colorCounts[hex] || 0) + 1;
+            }
+            
+            // Sort by frequency and return top colors
+            return Object.entries(colorCounts)
+                .sort(([,a], [,b]) => b - a)
+                .slice(0, 8)
+                .map(([color]) => color);
+        }
+
+        // Get AI descriptions for colors
+        async function getAIColorDescriptions(colors) {
+            try {
+                const prompt = `Analyze these hex colors and provide creative, descriptive names for each: ${colors.join(', ')}
+
+Instructions:
+- Provide exactly ${colors.length} color names
+- Each name should be 1-3 words
+- Be creative and descriptive
+- Examples: "Ocean Blue", "Sunset Orange", "Forest Green", "Rose Pink"
+- Separate each name with a comma
+
+Colors: ${colors.join(', ')}
+Names:`;
+                
+                console.log('Requesting color descriptions...');
+                const response = await callOpenRouterAPI(prompt);
+                console.log('AI color descriptions response:', response);
+                
+                const names = response.split(',').map(name => name.trim()).slice(0, colors.length);
+                return names.length === colors.length ? names : colors.map((_, i) => `Color ${i + 1}`);
+            } catch (error) {
+                console.error('Error getting AI color descriptions:', error);
+                return colors.map((_, i) => `Color ${i + 1}`);
+            }
+        }
+
+        // Test API function
+        async function testAPI() {
+            try {
+                console.log('Testing API...');
+                showAlert('shadesAlert', 'Testing AI connection...', 'success');
+                
+                const response = await callOpenRouterAPI('What is the hex code for red? Respond only with #RRGGBB format.');
+                console.log('Test response:', response);
+                
+                showAlert('shadesAlert', `AI is working! Response: ${response}`, 'success');
+            } catch (error) {
+                console.error('API Test failed:', error);
+                showAlert('shadesAlert', `AI test failed: ${error.message}. Check your API key and internet connection.`, 'error');
+            }
+        }
+
+        // Enter key listeners
+        document.getElementById('colorInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') generateShades();
+        });
+
+        document.getElementById('textPrompt').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && e.ctrlKey) textToColor();
+        });
+
+        // Add some example buttons for testing
+        function loadExample(example) {
+            const examples = {
+                'pink': 'pink',
+                'light-pink': 'light pink',
+                'hot-pink': 'hot pink',
+                'ocean': 'deep ocean blue',
+                'sunset': 'warm sunset orange',
+                'forest': 'deep forest green'
+            };
+            
+            if (example in examples) {
+                document.getElementById('colorInput').value = examples[example];
+                generateShades();
+            }
+        }
+    </script>
+</body>
+</html>
